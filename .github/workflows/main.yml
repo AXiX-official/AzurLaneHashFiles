@@ -3,6 +3,7 @@ name: Update HashFiles Workflow
 on:
   schedule:
     - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   Update_HashFiles:
