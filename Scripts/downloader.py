@@ -54,6 +54,10 @@ if __name__ == "__main__":
     if not compare_files('tmp/version.json', f'{last}/version.json'):
         for key, value in hash_csv_name.items():
             download_file(f'{andorid_hash_url}{hashfile_url[key]}', 'tmp', value)
+    else:
+        shutil.rmtree('tmp')
+        print("No changes.")
+        exit()
 
     date = datetime.now().strftime('%Y-%m-%d-%H-%M')
     path = os.path.join(history_path, date)
@@ -63,3 +67,4 @@ if __name__ == "__main__":
         shutil.copy(os.path.join('tmp', file), file)
 
     shutil.rmtree('tmp')
+    print(date)

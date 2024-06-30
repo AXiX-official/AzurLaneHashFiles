@@ -1,0 +1,39 @@
+name: Update HashFiles Workflow
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  Update_HashFiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Run downloader script
+        id: downloader
+        run: |
+          output=$(python Scripts/downloader.py)
+          echo "::set-output name=date::$output"
+          if [[ "$output" == "No changes." ]]; then
+            echo "::set-output name=skip_commit::true"
+          fi
+
+      - name: Add changes
+        run: git add .
+
+      - name: Use the date for commit
+        if: steps.downloader.outputs.skip_commit != 'true'
+        run: |
+          echo "The date is ${{ steps.downloader.outputs.date }}"
+          git commit -am "Update data for ${{ steps.downloader.outputs.date }}" || echo "No changes to commit"
+
+      - name: Push changes
+        if: steps.downloader.outputs.skip_commit != 'true'
+        run: git push
