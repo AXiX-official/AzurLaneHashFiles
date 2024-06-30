@@ -21,6 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests
+          pip install pytz
 
       - name: Run downloader script
         id: downloader
@@ -38,8 +39,8 @@ jobs:
         if: steps.downloader.outputs.skip_commit != 'true'
         run: |
           echo "The date is ${{ steps.downloader.outputs.date }}"
-          git commit -am "Update data for ${{ steps.downloader.outputs.date }}" || echo "No changes to commit"
-
+          git commit -am "${{ steps.downloader.outputs.date }}"
+          
       - name: Push changes
         if: steps.downloader.outputs.skip_commit != 'true'
         uses: ad-m/github-push-action@master
@@ -53,6 +54,7 @@ jobs:
           python Scripts/release.py ${{ steps.downloader.outputs.date }}
 
       - name: Create and publish release
+        id: create_release
         if: steps.downloader.outputs.skip_commit != 'true'
         uses: actions/create-release@v1
         env:

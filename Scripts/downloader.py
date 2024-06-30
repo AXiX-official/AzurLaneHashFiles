@@ -4,7 +4,7 @@ import json
 import hashlib
 from typing import List
 from datetime import datetime
-
+import pytz
 from network import download_file, get_hashfile_url
 
 history_path = 'history'
@@ -59,7 +59,8 @@ if __name__ == "__main__":
         print("No changes.")
         exit()
 
-    date = datetime.now().strftime('%Y-%m-%d-%H-%M')
+    beijing_tz = pytz.timezone('Asia/Shanghai')
+    date = datetime.now(beijing_tz).strftime('%Y-%m-%d-%H-%M')
     path = os.path.join(history_path, date)
     os.mkdir(path)
     for file in os.listdir('tmp'):
