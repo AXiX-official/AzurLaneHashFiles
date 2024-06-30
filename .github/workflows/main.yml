@@ -43,3 +43,5 @@ jobs:
       - name: Push changes
         if: steps.downloader.outputs.skip_commit != 'true'
         run: git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
