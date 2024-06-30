@@ -38,6 +38,8 @@ jobs:
       - name: Use the date for commit
         if: steps.downloader.outputs.skip_commit != 'true'
         run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           echo "The date is ${{ steps.downloader.outputs.date }}"
           git commit -am "${{ steps.downloader.outputs.date }}"
           
