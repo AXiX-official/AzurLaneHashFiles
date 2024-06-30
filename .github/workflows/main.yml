@@ -42,6 +42,34 @@ jobs:
 
       - name: Push changes
         if: steps.downloader.outputs.skip_commit != 'true'
-        run: git push
+        uses: ad-m/github-push-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: Run release script
+        if: steps.downloader.outputs.skip_commit != 'true'
+        run: |
+          python Scripts/release.py ${{ steps.downloader.outputs.date }}
+
+      - name: Create and publish release
+        if: steps.downloader.outputs.skip_commit != 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.downloader.outputs.date }}
+          release_name: Release ${{ steps.downloader.outputs.date }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        if: steps.downloader.outputs.skip_commit != 'true'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Scripts/${{ steps.downloader.outputs.date }}.zip
+          asset_name: ${{ steps.downloader.outputs.date }}.zip
+          asset_content_type: application/zip
