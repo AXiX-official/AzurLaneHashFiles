@@ -1,0 +1,13 @@
+{
+    "apk_version": "https://pkgdl.biligame.net/games/blhx_7.1.1_20230610_1_20230616_031339_073b2.apk",
+    "hashfile_url": {
+        "az": "$azhash$7$1$379$fd9f838f9f131b34",
+        "cv": "$cvhash$723$d0d5aa4778ae37fe",
+        "l2d": "$l2dhash$660$e97517a6e81d9a43",
+        "pic": "$pichash$46$097e60419734291d",
+        "bgm": "$bgmhash$36$ea9de9ee37d80caf",
+        "painting": "$paintinghash$208$b6633371a259c6f3",
+        "manga": "$mangahash$48$4f8a4f0ae3e9b4c1",
+        "cipher": "$cipherhash$14$fdf75d8c77c0488c"
+    }
+}
