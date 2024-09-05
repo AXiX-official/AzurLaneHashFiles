@@ -64,7 +64,7 @@ def get_hash_from_apk(apk_version: str) -> None:
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
-    print('file extracted')
+    #print('file extracted')
 
     with open('tmp/hashes-apk.csv', 'w', encoding='utf-8') as f:
         base_path = 'tmp/assets/AssetBundles/'
@@ -74,7 +74,7 @@ def get_hash_from_apk(apk_version: str) -> None:
                 key = (mroot == '') and file or f'{mroot}/{file}'
                 md5 = get_md5(os.path.join(root, file))
                 size = os.path.getsize(os.path.join(root, file))
-                print(f'{key},{size},{md5}')
+                #print(f'{key},{size},{md5}')
                 f.write(f'{key},{size},{md5}\n')
         
 
