@@ -1,0 +1,14 @@
+{
+    "apk_version": "https://pkg.biligame.com/games/blhx_8.2.1_0820_1_20240830_041443_51682.apk",
+    "hashfile_url": {
+        "az": "$azhash$8$2$72$db8c113311cd65db",
+        "cv": "$cvhash$828$205734b0c58f607d",
+        "l2d": "$l2dhash$865$a656384ca7efda89",
+        "pic": "$pichash$303$22c757bc00611b3b",
+        "bgm": "$bgmhash$303$22c757bc00611b3b",
+        "painting": "$paintinghash$480$18a0faec6f1f4054",
+        "manga": "$mangahash$313$3b063ad65d810244",
+        "cipher": "$cipherhash$304$b4ff4029bdd28edf",
+        "dorm": "$dormhash$1$20240820"
+    }
+}
