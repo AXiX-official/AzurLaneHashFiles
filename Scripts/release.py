@@ -10,6 +10,7 @@ hash_csv_name = {
     'painting': 'hashes-painting.csv',
     'manga': 'hashes-manga.csv',
     'cipher': 'hashes-cipher.csv'
+    'apk': 'hashes-apk.csv'
 }
 
 if __name__ == "__main__":
