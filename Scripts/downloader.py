@@ -108,7 +108,7 @@ if __name__ == "__main__":
     path = os.path.join(history_path, date)
     os.mkdir(path)
     for file in os.listdir('tmp'):
-        if file.endswith('.csv'):
+        if file.endswith('.csv') or file.endswith('.json'):
             shutil.copy(os.path.join('tmp', file), os.path.join(path, file))
             shutil.copy(os.path.join('tmp', file), file)
 
