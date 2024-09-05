@@ -64,7 +64,7 @@ def get_hash_from_apk(apk_version: str) -> None:
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
-    with open('hashes-apk.csv', 'w', encoding='utf-8') as f:
+    with open('tmp/hashes-apk.csv', 'w', encoding='utf-8') as f:
         base_path = 'tmp/assets/AssetBundles/'
         for root, dirs, files in os.walk(base_path):
             mroot = root.replace(base_path, '').replace('\\', '/')
@@ -72,6 +72,7 @@ def get_hash_from_apk(apk_version: str) -> None:
                 key = (mroot == '') and file or f'{mroot}/{file}'
                 md5 = get_md5(os.path.join(root, file))
                 size = os.path.getsize(os.path.join(root, file))
+                print(f'{key},{size},{md5}')
                 f.write(f'{key},{size},{md5}\n')
         
 
@@ -105,8 +106,9 @@ if __name__ == "__main__":
     path = os.path.join(history_path, date)
     os.mkdir(path)
     for file in os.listdir('tmp'):
-        shutil.copy(os.path.join('tmp', file), os.path.join(path, file))
-        shutil.copy(os.path.join('tmp', file), file)
+        if file.endswith('.csv'):
+            shutil.copy(os.path.join('tmp', file), os.path.join(path, file))
+            shutil.copy(os.path.join('tmp', file), file)
 
     shutil.rmtree('tmp')
     print(date)
