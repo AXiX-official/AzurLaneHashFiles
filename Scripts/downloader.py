@@ -64,6 +64,8 @@ def get_hash_from_apk(apk_version: str) -> None:
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
+    print('file extracted')
+
     with open('tmp/hashes-apk.csv', 'w', encoding='utf-8') as f:
         base_path = 'tmp/assets/AssetBundles/'
         for root, dirs, files in os.walk(base_path):
