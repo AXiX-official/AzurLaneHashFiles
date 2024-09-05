@@ -9,7 +9,7 @@ hash_csv_name = {
     'bgm': 'hashes-bgm.csv',
     'painting': 'hashes-painting.csv',
     'manga': 'hashes-manga.csv',
-    'cipher': 'hashes-cipher.csv'
+    'cipher': 'hashes-cipher.csv',
     'apk': 'hashes-apk.csv'
 }
 
