@@ -57,13 +57,10 @@ def get_md5(file_path: str) -> str:
 
 def get_hash_from_apk(apk_version: str) -> None:
     """获取apk文件中的hash值"""
-    with open(f'{latest_history()}/version.json', 'r', encoding='utf-8') as f:
-        old_apk_version = json.load(f)['apk_version']
-    if old_apk_version != apk_version:
-        if platform.system() == "Linux":
-            os.system(f"wget -O tmp/base.apk {apk_version}")
-        elif platform.system() == "Windows":
-            os.system(f"powershell -Command \"Invoke-WebRequest -Uri {apk_version} -OutFile tmp\\base.apk\"")
+    if platform.system() == "Linux":
+        os.system(f"wget -O tmp/base.apk {apk_version}")
+    elif platform.system() == "Windows":
+        os.system(f"powershell -Command \"Invoke-WebRequest -Uri {apk_version} -OutFile tmp\\base.apk\"")
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
@@ -81,20 +78,21 @@ def get_hash_from_apk(apk_version: str) -> None:
 if __name__ == "__main__":
     os.mkdir('tmp')
     last = latest_history()
-    print(last)
     apk_version, hashfile_url = get_hashfile_url()
     data = {
         'apk_version': apk_version,
         'hashfile_url': hashfile_url
     }
-    print(data)
     with open('tmp/version.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
     if not compare_files('tmp/version.json', f'{last}/version.json'):
         for key, value in hash_csv_name.items():
             download_file(f'{andorid_hash_url}{hashfile_url[key]}', 'tmp', value)
-        get_hash_from_apk(apk_version)
+        with open(f'{latest_history()}/version.json', 'r', encoding='utf-8') as f:
+            old_apk_version = json.load(f)['apk_version']
+            if old_apk_version != apk_version:
+                get_hash_from_apk(apk_version)
     elif not os.path.exists(f'hashes-apk.csv'):
         get_hash_from_apk(apk_version)
     else:
