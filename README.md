@@ -9,3 +9,5 @@
 最接近大更新(Unity版本2018到2020)的hash文件是`2024-04-25-14-03`。
 
 **从`2024-09-05-23-46`开始，`hashes-apk.csv`文件中包含了apk的hash值。**
+
+国内加速镜像：[AXiX's Gitea](https://gitea.axix.top/AXiX/AzurLaneHashFiles)
