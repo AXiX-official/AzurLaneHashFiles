@@ -10,17 +10,23 @@ def mkfile(content, dir_path, file_name):
     with open(file_path, "w", newline='\n') as f:
         f.write(content)
 
-def send_tcp_request(server_ip: str, server_port: int, hex_message: str) -> bytes:
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((server_ip, server_port))
+def send_tcp_request(server_ip: str, server_port: int, hex_message: str, retry: int = 5) -> bytes:
+    for i in range(retry):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((server_ip, server_port))
 
-    message_bytes = bytes.fromhex(hex_message)
+            message_bytes = bytes.fromhex(hex_message)
 
-    s.sendall(message_bytes)
-    data = s.recv(1024)
-    s.close()
+            s.sendall(message_bytes)
+            data = s.recv(1024)
+            s.close()
 
-    return data
+            return data
+        except Exception as e:
+            print(f"Error: {e}")
+            print(f"Retry {i+1}/{retry}")
+    raise Exception("Failed to send TCP request")
 
 def download_file(url: str, dir_path: str, file_name: str) -> None:
     r = requests.get(url)
