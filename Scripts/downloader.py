@@ -19,7 +19,8 @@ hash_csv_name = {
     'bgm': 'hashes-bgm.csv',
     'painting': 'hashes-painting.csv',
     'manga': 'hashes-manga.csv',
-    'cipher': 'hashes-cipher.csv'
+    'cipher': 'hashes-cipher.csv',
+    'dorm': 'hashes-dorm.csv',
 }
 
 def latest_history() -> str:
