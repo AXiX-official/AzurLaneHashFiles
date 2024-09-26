@@ -10,4 +10,6 @@
 
 **从`2024-09-05-23-46`开始，`hashes-apk.csv`文件中包含了apk的hash值。**
 
+**`2024-09-26-11-14`以及之前的dorm内容的csv文件因为脚本未及时更新，Release中缺少对应的csv文件。`history`中的文件已经手动更新。**
+
 国内加速镜像：[AXiX's Gitea](https://gitea.axix.top/AXiX/AzurLaneHashFiles)
