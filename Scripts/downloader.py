@@ -57,6 +57,7 @@ def get_md5(file_path: str) -> str:
     return md5.hexdigest()
 
 def get_hash_from_apk(apk_version: str) -> None:
+    return # 暂时不收集apk中的数据，因为github action平台下载会403: Forbidden
     """获取apk文件中的hash值"""
     if platform.system() == "Linux":
         os.system(f"wget -O tmp/base.apk {apk_version}")
