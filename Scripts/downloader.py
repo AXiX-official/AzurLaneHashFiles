@@ -57,12 +57,12 @@ def get_md5(file_path: str) -> str:
     return md5.hexdigest()
 
 def get_hash_from_apk(apk_version: str) -> None:
-    # return # 暂时不收集apk中的数据，因为github action平台下载会403: Forbidden
     """获取apk文件中的hash值"""
+    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     if platform.system() == "Linux":
-        os.system(f"wget -O tmp/base.apk {apk_version}")
+        os.system(f"wget --user-agent='{user_agent}' -O tmp/base.apk {apk_version}")
     elif platform.system() == "Windows":
-        os.system(f"powershell -Command \"Invoke-WebRequest -Uri {apk_version} -OutFile tmp\\base.apk\"")
+        os.system(f"powershell -Command \"Invoke-WebRequest -Uri {apk_version} -UserAgent '{user_agent}' -OutFile tmp\\base.apk\"")
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
