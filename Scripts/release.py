@@ -11,6 +11,7 @@ hash_csv_name = {
     'manga': 'hashes-manga.csv',
     'cipher': 'hashes-cipher.csv',
     'dorm': 'hashes-dorm.csv',
+    'map': 'hashes-map.csv',
     'apk': 'hashes-apk.csv'
 }
 
