@@ -9,6 +9,7 @@ import pytz
 import platform
 import zipfile
 from network import download_file, get_hashfile_url
+import requests
 
 history_path = 'history'
 andorid_hash_url = "https://line3-patch-blhx.bilibiligame.net/android/hash/"
@@ -53,10 +54,32 @@ def get_md5(file_path: str) -> str:
 def get_hash_from_apk(apk_version: str) -> None:
     """获取apk文件中的hash值"""
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    if platform.system() == "Linux":
-        os.system(f"wget --user-agent='{user_agent}' -O tmp/base.apk {apk_version}")
-    elif platform.system() == "Windows":
-        os.system(f"powershell -Command \"Invoke-WebRequest -Uri {apk_version} -UserAgent '{user_agent}' -OutFile tmp\\base.apk\"")
+    def download_large_file(url: str, dest_path: str, headers: dict = None, chunk_size: int = 1024 * 1024):
+        os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+        session = requests.Session()
+        req_headers = headers or {}
+        try:
+            with session.get(url, headers=req_headers, stream=True, allow_redirects=True, timeout=30) as r:
+                if r.status_code == 403:
+                    # retry with a Referer header which sometimes fixes 403 on CI
+                    req_headers.setdefault('Referer', andorid_hash_url)
+                    with session.get(url, headers=req_headers, stream=True, allow_redirects=True, timeout=30) as r2:
+                        r2.raise_for_status()
+                        with open(dest_path, 'wb') as f:
+                            for chunk in r2.iter_content(chunk_size=chunk_size):
+                                if chunk:
+                                    f.write(chunk)
+                        return
+                r.raise_for_status()
+                with open(dest_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=chunk_size):
+                        if chunk:
+                            f.write(chunk)
+        except requests.RequestException as e:
+            raise RuntimeError(f"Failed to download {url}: {e}")
+
+    download_headers = {"User-Agent": user_agent}
+    download_large_file(apk_version, os.path.join('tmp', 'base.apk'), headers=download_headers)
 
     extract_folder_from_apk('tmp/base.apk', 'assets/AssetBundles/', 'tmp')
 
