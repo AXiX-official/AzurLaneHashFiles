@@ -2,6 +2,7 @@ import os
 import shutil
 import json
 import hashlib
+import csv
 from typing import List
 from datetime import datetime
 import pytz
@@ -23,14 +24,6 @@ hash_csv_name = {
     'dorm': 'hashes-dorm.csv',
     'map': 'hashes-map.csv',
 }
-
-def latest_history() -> str:
-    """
-    获取最新的history文件夹
-    """
-    history_list = os.listdir(history_path)
-    history_list.sort()
-    return os.path.join(history_path, history_list[-1])
 
 def file_hash(filepath):
     """计算文件的哈希值"""
@@ -81,9 +74,31 @@ def get_hash_from_apk(apk_version: str) -> None:
                 f.write(f'{key},{size},{md5}\n')
         
 
+def sort_csv_by_first_column(filepath: str) -> None:
+    """按第一列（字符串）对 CSV 文件排序并就地覆盖文件。"""
+    rows = []
+    try:
+        with open(filepath, newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if not row:
+                    continue
+                rows.append(row)
+    except FileNotFoundError:
+        return
+
+    if not rows:
+        return
+
+    rows.sort(key=lambda r: r[0])
+
+    with open(filepath, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+
+
 if __name__ == "__main__":
     os.mkdir('tmp')
-    last = latest_history()
     apk_version, hashfile_url = get_hashfile_url()
     data = {
         'apk_version': apk_version,
@@ -92,10 +107,10 @@ if __name__ == "__main__":
     with open('tmp/version.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-    if not compare_files('tmp/version.json', f'{last}/version.json'):
+    if not compare_files('tmp/version.json', f'version.json'):
         for key, value in hash_csv_name.items():
             download_file(f'{andorid_hash_url}{hashfile_url[key]}', 'tmp', value)
-        with open(f'{latest_history()}/version.json', 'r', encoding='utf-8') as f:
+        with open(f'version.json', 'r', encoding='utf-8') as f:
             old_apk_version = json.load(f)['apk_version']
             if old_apk_version != apk_version:
                 get_hash_from_apk(apk_version)
@@ -111,9 +126,12 @@ if __name__ == "__main__":
     path = os.path.join(history_path, date)
     os.mkdir(path)
     for file in os.listdir('tmp'):
+        src = os.path.join('tmp', file)
+        if file.endswith('.csv'):
+            sort_csv_by_first_column(src)
         if file.endswith('.csv') or file.endswith('.json'):
-            shutil.copy(os.path.join('tmp', file), os.path.join(path, file))
-            shutil.copy(os.path.join('tmp', file), file)
+            shutil.copy(src, os.path.join(path, file))
+            shutil.copy(src, file)
 
     shutil.rmtree('tmp')
     print(date)

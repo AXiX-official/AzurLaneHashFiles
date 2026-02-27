@@ -27,9 +27,9 @@ jobs:
         id: downloader
         run: |
           output=$(python Scripts/downloader.py)
-          echo "::set-output name=date::$output"
+          echo "date=$output" >> "$GITHUB_OUTPUT"
           if [[ "$output" == "No changes." ]]; then
-            echo "::set-output name=skip_commit::true"
+            echo "skip_commit=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Add changes
