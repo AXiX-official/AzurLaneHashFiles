@@ -1,0 +1,15 @@
+{
+    "apk_version": "https://pkg.biligame.com/games/blhx_9.7.25_0828_1_20260920_104023_5af08.apk",
+    "hashfile_url": {
+        "az": "$azhash$9$7$423$990e6fb49e388fdc",
+        "cv": "$cvhash$1492$1b20fed9b7300799",
+        "l2d": "$l2dhash$1607$354af993836d0922",
+        "pic": "$pichash$1312$8a012342ed5fa1ff",
+        "bgm": "$bgmhash$1300$d10f89b716830704",
+        "painting": "$paintinghash$1816$6ba1832e54245f15",
+        "manga": "$mangahash$1342$a0e167afa87865dc",
+        "cipher": "$cipherhash$1310$5caeaadfa764a04e",
+        "dorm": "$dormhash$1551$8e7d5d13f4cd923c",
+        "map": "$maphash$336$773e2b8757c13184"
+    }
+}
